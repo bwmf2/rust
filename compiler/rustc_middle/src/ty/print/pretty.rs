@@ -1915,7 +1915,15 @@ impl<'tcx> Printer<'tcx> for FmtPrinter<'_, 'tcx> {
                 if SHOULD_PREFIX_WITH_CRATE.with(|flag| flag.get()) {
                     write!(self, "{}", kw::Crate)?;
                     self.empty_path = false;
+                } else if self.tcx.sess.opts.unstable_opts.unstable {
+                    debug!("unstable in");
+                    write!(self, "{}", self.tcx.crate_name(cnum))?;
+                    self.empty_path = false;
                 }
+            } else if self.tcx.sess.opts.unstable_opts.unstable {
+                debug!("unstable out");
+                write!(self, "{}", self.tcx.crate_name(cnum))?;
+                self.empty_path = false;
             }
         } else {
             write!(self, "{}", self.tcx.crate_name(cnum))?;

@@ -1758,6 +1758,7 @@ options! {
         "enable unsound and buggy MIR optimizations (default: no)"),
     /// This name is kind of confusing: Most unstable options enable something themselves, while
     /// this just allows "normal" options to be feature-gated.
+    unstable: bool = (false, parse_bool, [UNTRACKED], "unstable"),
     #[rustc_lint_opt_deny_field_access("use `Session::unstable_options` instead of this field")]
     unstable_options: bool = (false, parse_bool, [UNTRACKED],
         "adds unstable command line options to rustc interface (default: no)"),

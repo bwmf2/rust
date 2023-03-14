@@ -29,7 +29,20 @@ fn layout_of<'tcx>(
     query: ty::ParamEnvAnd<'tcx, Ty<'tcx>>,
 ) -> Result<TyAndLayout<'tcx>, LayoutError<'tcx>> {
     let (param_env, ty) = query.into_parts();
-    debug!(?ty);
+    use crate::layout::hir::def_id::LOCAL_CRATE;
+    use crate::rustc_middle::query::Key;
+    let name = tcx.crate_name(LOCAL_CRATE);
+    debug!(
+        "layout {:?} {:?} {} {} {:?}",
+        name,
+        ty,
+        ty,
+        rustc_middle::ty::print::with_no_trimmed_paths!(ty),
+        rustc_middle::ty::print::with_no_trimmed_paths!(ty)
+    );
+    if let Some(def_id) = ty.ty_adt_id() {
+        debug!("ty: {}", tcx.def_path_str(def_id))
+    }
 
     let param_env = param_env.with_reveal_all_normalized(tcx);
     let unnormalized_ty = ty;
